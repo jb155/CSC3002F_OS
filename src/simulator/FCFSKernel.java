@@ -5,6 +5,8 @@ import java.io.IOException;
 //
 import java.util.*;
 
+import static simulator.ProcessControlBlock.State.TERMINATED;
+
 /**
  * Concrete Kernel type
  * 
@@ -12,13 +14,16 @@ import java.util.*;
  * @version 8/3/15
  */
 public class FCFSKernel implements Kernel {
-    
 
     //private Deque<ProcessControlBlock> readyQueue;    --- overly complicated. Decided to take the easier route.
     private LinkedList<ProcessControlBlock> readyQueue;
+    private CPU cpu;
+    private IODevice[] ioDevices;
 
-    public FCFSKernel() {
+    public FCFSKernel(CPU cpu, IODevice[] ioDev) {
 		// Set up the ready queue.
+        this.cpu = cpu;
+        ioDevices = ioDev;
         readyQueue = new LinkedList<ProcessControlBlock>();
     }
     
@@ -27,6 +32,8 @@ public class FCFSKernel implements Kernel {
 		// currently on CPU with one at front of ready queue.
 		// If ready queue empty then CPU goes idle ( holds a null value).
 		// Returns process removed from CPU.
+        ProcessControlBlock returnedFromCPU = (cpu.contextSwitch(readyQueue.poll())); //Give it next process (pop it off) and retrieve prev process;
+        return returnedFromCPU;
 	}
             
     
@@ -46,7 +53,11 @@ public class FCFSKernel implements Kernel {
                     if (pcb!=null) {
                         // Loaded successfully.
 						// Now add to end of ready queue.
+                        readyQueue.add(pcb);
 						// If CPU idle then call dispatch.
+                        if (cpu.isIdle()){
+                            dispatch();
+                        }
                     }
                     else {
                         result = -1;
@@ -57,8 +68,11 @@ public class FCFSKernel implements Kernel {
                 {
 					// IO request has come from process currently on the CPU.
 					// Get PCB from CPU.
+                    ProcessControlBlock tempProcess = cpu.getCurrentProcess();
 					// Find IODevice with given ID: Config.getDevice((Integer)varargs[0]);
+                    IODevice temppIODevice = Config.getDevice((Integer)varargs[0]);
 					// Make IO request on device providing burst time (varages[1]),
+
 					// the PCB of the requesting process, and a reference to this kernel (so // that the IODevice can call interrupt() when the request is completed.
 					//
 					// Set the PCB state of the requesting process to WAITING.
@@ -70,7 +84,9 @@ public class FCFSKernel implements Kernel {
 					// Process on the CPU has terminated.
 					// Get PCB from CPU.
 					// Set status to TERMINATED.
+                    cpu.getCurrentProcess().setState(TERMINATED);
                     // Call dispatch().
+                    dispatch(); //Need to check here...dispatch returns a pcb
                 }
                 break;
              default:
@@ -106,7 +122,7 @@ public class FCFSKernel implements Kernel {
         catch (IOException ioExp) {
             return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
     }
 }
