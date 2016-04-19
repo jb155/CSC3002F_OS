@@ -15,6 +15,8 @@ import java.util.Deque;
  */
 public class FCFSKernel implements Kernel {
 
+    private static int pid = 1;
+
     private Deque<ProcessControlBlockImpl> readyQueue;
     //private LinkedList<ProcessControlBlock> readyQueue;
 
@@ -24,8 +26,21 @@ public class FCFSKernel implements Kernel {
     }
     
     private ProcessControlBlockImpl dispatch() {
-        ProcessControlBlockImpl nextPCB,currentPCB;
-        System.out.println(""+readyQueue.peek().getInstruction().getClass());
+        ProcessControlBlockImpl prev_process = (ProcessControlBlockImpl) Config.getCPU().getCurrentProcess();
+        ProcessControlBlockImpl next_process;
+
+        if(readyQueue.isEmpty()){
+            //set cpu to idle
+            Config.getCPU().contextSwitch(null);
+        }
+        else{
+            next_process = readyQueue.pollFirst();
+            Config.getCPU().contextSwitch(next_process);
+            next_process.setState(ProcessControlBlockImpl.State.RUNNING);
+        }
+        return prev_process;
+        /*ProcessControlBlockImpl nextPCB,currentPCB;
+        //System.out.println(""+readyQueue.peek().getInstruction().getClass());
         //Gets the PCB that is going to be replaced.
         currentPCB = (ProcessControlBlockImpl)Config.getCPU().getCurrentProcess();
         if(!readyQueue.isEmpty()){
@@ -39,7 +54,7 @@ public class FCFSKernel implements Kernel {
             Config.getCPU().contextSwitch(null);
         }
         // Returns process removed from CPU.
-        return currentPCB;
+        return currentPCB;*/
 	}
 
     public int syscall(int number, Object... varargs) {
@@ -133,7 +148,9 @@ public class FCFSKernel implements Kernel {
     
     private static ProcessControlBlockImpl loadProgram(String filename) {
         try {
-            return ProcessControlBlockImpl.loadProgram(filename);
+            int new_pcb_pid = pid;
+            pid++;
+            return ProcessControlBlockImpl.loadProgram(filename,new_pcb_pid);
         }
         catch (FileNotFoundException fileExp) {
             return null;

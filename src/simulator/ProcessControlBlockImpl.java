@@ -21,9 +21,9 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         programName = name;
     }
 
-    public ProcessControlBlockImpl(String programName){
+    public ProcessControlBlockImpl(String programName, int PIDCount){
         this.PIDCount++;
-        this.PID = this.PIDCount;
+        this.PID = PIDCount;
         this.programName = programName;
         this.setState(state.READY);
     }
@@ -108,15 +108,15 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         this.state = state;
     }
 
-    public static ProcessControlBlockImpl loadProgram(String filename) throws Exception{
+    public static ProcessControlBlockImpl loadProgram(String filename,int pid) throws Exception{
         try {
             String sCurrentLine;
             BufferedReader br = new BufferedReader(new FileReader(filename));
 
-            ProcessControlBlockImpl pcb = new ProcessControlBlockImpl(filename);
+            ProcessControlBlockImpl pcb = new ProcessControlBlockImpl(filename,pid);
 
             //name
-            br.readLine().replace("#", "");
+            //br.readLine().replace("#", "");
 
             while ((sCurrentLine = br.readLine()) != null) {
                 //checks if # (ie comment)
@@ -141,4 +141,5 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
             throw ioExp;
         }
     }
+
 }
