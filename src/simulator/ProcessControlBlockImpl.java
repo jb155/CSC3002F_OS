@@ -4,20 +4,37 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by Jacques on 4/18/2016.
  */
 public class ProcessControlBlockImpl implements ProcessControlBlock {
-    private int PID = -1;
+    private static int PID = 1;
     private String programName;
     private int priority = -1;
-    private LinkedList<Instruction> instructionQ = new LinkedList<>();
+    private Instruction instruction;
+    private ArrayList<Instruction> instructionQ;
+    private int pc;
     private State state;
+
+    public ProcessControlBlockImpl (String name){
+        this.PID = PID;
+        programName = name;
+        instructionQ = new ArrayList<Instruction>();
+        pc = 0;
+    }
+
+    public void start(){
+        instruction = instructionQ.get(pc);
+    }
 
     public void setName (String name){
         programName = name;
+    }
+
+    public void add (Instruction in){
+        instructionQ.add(in);
     }
 
     /**
@@ -60,7 +77,7 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
      */
     @Override
     public Instruction getInstruction() {
-        return instructionQ.peek();
+        return instruction;
     }
 
     /**
@@ -68,10 +85,10 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
      */
     @Override
     public boolean hasNextInstruction() {
-        if (instructionQ.isEmpty()){    //if it is empty...means it does not have next (due to the get Instruction method [poll])
-            return false;
-        }else{
+        if(instructionQ.size()>pc +1){
             return true;
+        }else{
+            return false;
         }
     }
 
@@ -80,7 +97,10 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
      */
     @Override
     public void nextInstruction() {
-        instructionQ.poll();
+        if(hasNextInstruction()) {
+            pc++;
+            instruction = instructionQ.get(pc);
+        }
     }
 
     /**
@@ -100,12 +120,11 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         this.state = state;
     }
 
-    public ProcessControlBlock loadProgram(String filename) throws Exception{
+    public static ProcessControlBlock loadProgram(String filename) throws Exception{
+        ProcessControlBlockImpl pcb = new ProcessControlBlockImpl (filename);
         try {
             String sCurrentLine;
             BufferedReader br = new BufferedReader(new FileReader(filename));
-
-            programName = br.readLine().replace("#", "");
 
             while ((sCurrentLine = br.readLine()) != null) {
                 //checks if # (ie comment)
@@ -113,10 +132,10 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
                     String[] splitString = sCurrentLine.split(" ");
                     //check if  CPU or IO
                     if(splitString[0].compareToIgnoreCase("CPU")==0){
-                        instructionQ.add(new CPUInstruction(Integer.parseInt(splitString[1])));
+                        pcb.add(new CPUInstruction(Integer.parseInt(splitString[1])));
                     }else if(splitString[0].compareToIgnoreCase("IO")==0){
                         IOInstruction tempInstruction = new IOInstruction(Integer.parseInt(splitString[1]),Integer.parseInt(splitString[2]));
-                        instructionQ.add(tempInstruction);
+                        pcb.add(tempInstruction);
                     }
                 }
                 System.out.println(sCurrentLine);
@@ -127,6 +146,8 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         } catch (IOException ioExp) {
             throw ioExp;
         }
-        return this;
+        PID++;
+        pcb.start();
+        return pcb;
     }
 }

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import static simulator.ProcessControlBlock.State.RUNNING;
 import static simulator.ProcessControlBlock.State.TERMINATED;
 import static simulator.ProcessControlBlock.State.WAITING;
 
@@ -37,8 +38,24 @@ public class FCFSKernel implements Kernel {
         }
         // Returns process removed from CPU.
         return prev_process;*/
-        Config.getSimulationClock().logContextSwitch();
-        return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
+       // Config.getSimulationClock().logContextSwitch();
+       // return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
+        ProcessControlBlockImpl curr = (ProcessControlBlockImpl) Config.getCPU().getCurrentProcess();
+
+        if(!readyQueue.isEmpty()) {
+            ProcessControlBlockImpl next = (ProcessControlBlockImpl) readyQueue.poll();
+            next.setState(RUNNING);
+            Config.getCPU().contextSwitch(next);
+
+        }
+
+        else{
+
+            Config.getCPU().contextSwitch(null);
+
+        }
+        return curr;
+
 	}
 
     public int syscall(int number, Object... varargs) {
@@ -102,7 +119,7 @@ public class FCFSKernel implements Kernel {
                 result = -1;
         }
         //advance time
-        Config.getSimulationClock().logSystemCall();
+        //Config.getSimulationClock().logSystemCall();
         return result;
     }
 
@@ -113,11 +130,9 @@ public class FCFSKernel implements Kernel {
             case WAKE_UP:
                 // IODevice has finished an IO request for a process.
                 // Retrieve the PCB of the process (varargs[1]), set its state
-                IODevice temp = Config.getDevice(Integer.parseInt(""+varargs[1]));
-                ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)temp.getProcess();
                 //ProcessControlBlock pcb = Config.getCPU().getCurrentProcess();
                 // to READY, put it on the end of the ready queue.
-                pcb.setState(ProcessControlBlock.State.READY);
+                ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)varargs[1];
                 readyQueue.add(pcb);
                 // If CPU is idle then dispatch().
                 if(Config.getCPU().isIdle()){
@@ -127,12 +142,12 @@ public class FCFSKernel implements Kernel {
             default:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
         }
-        Config.getSimulationClock().logInterrupt();
+        //Config.getSimulationClock().logInterrupt();
     }
     
     private static ProcessControlBlock loadProgram(String filename) {
         try {
-            ProcessControlBlockImpl temp = new ProcessControlBlockImpl();
+            ProcessControlBlockImpl temp = new ProcessControlBlockImpl(filename);
             return temp.loadProgram(filename);
         }
         catch (FileNotFoundException fileExp) {
