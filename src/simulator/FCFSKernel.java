@@ -133,8 +133,8 @@ public class FCFSKernel implements Kernel {
                 // Retrieve the PCB of the process (varargs[1]), set its state
                 ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)varargs[1];
                 // to READY, put it on the end of the ready queue.
-                readyQueue.addLast(pcb);
                 pcb.setState(ProcessControlBlock.State.READY);
+                readyQueue.addLast(pcb);
                 // If CPU is idle then dispatch().
                 if(Config.getCPU().isIdle()){
                     dispatch();
