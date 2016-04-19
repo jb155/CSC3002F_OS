@@ -13,11 +13,19 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
     private int PID = -1;
     private String programName;
     private int priority = -1;
-    private LinkedList<Instruction> instructionQ = new LinkedList<>();
+    public LinkedList<Instruction> instructionQ = new LinkedList<>();
     private State state;
+    public static int PIDCount = 1;
 
     public void setName (String name){
         programName = name;
+    }
+
+    public ProcessControlBlockImpl(String programName){
+        this.PIDCount++;
+        this.PID = this.PIDCount;
+        this.programName = programName;
+        this.setState(state.READY);
     }
 
     /**
@@ -100,12 +108,15 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         this.state = state;
     }
 
-    public ProcessControlBlock loadProgram(String filename) throws Exception{
+    public static ProcessControlBlock loadProgram(String filename) throws Exception{
         try {
             String sCurrentLine;
             BufferedReader br = new BufferedReader(new FileReader(filename));
 
-            programName = br.readLine().replace("#", "");
+            ProcessControlBlockImpl pcb = new ProcessControlBlockImpl(filename);
+
+            //name
+            br.readLine().replace("#", "");
 
             while ((sCurrentLine = br.readLine()) != null) {
                 //checks if # (ie comment)
@@ -113,20 +124,21 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
                     String[] splitString = sCurrentLine.split(" ");
                     //check if  CPU or IO
                     if(splitString[0].compareToIgnoreCase("CPU")==0){
-                        instructionQ.add(new CPUInstruction(Integer.parseInt(splitString[1])));
+                        CPUInstruction tempInstruction = new CPUInstruction(Integer.parseInt(splitString[1]));
+                        pcb.instructionQ.add(tempInstruction);
                     }else if(splitString[0].compareToIgnoreCase("IO")==0){
                         IOInstruction tempInstruction = new IOInstruction(Integer.parseInt(splitString[1]),Integer.parseInt(splitString[2]));
-                        instructionQ.add(tempInstruction);
+                        pcb.instructionQ.add(tempInstruction);
                     }
                 }
-                System.out.println(sCurrentLine);
+                //System.out.println(sCurrentLine);
             }
+            return pcb;
 
         } catch (FileNotFoundException fileExp) {
             throw fileExp;
         } catch (IOException ioExp) {
             throw ioExp;
         }
-        return this;
     }
 }

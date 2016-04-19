@@ -26,19 +26,22 @@ public class FCFSKernel implements Kernel {
     }
     
     private ProcessControlBlock dispatch() {
-        /*// Perform context switch, swapping process
-        ProcessControlBlock prev_process = Config.getCPU().contextSwitch(readyQueue.poll());
-        Config.getCPU().getCurrentProcess().setState(ProcessControlBlock.State.RUNNING);
-        // currently on CPU with one at front of ready queue.
-        // If ready queue empty then CPU goes idle ( holds a null value).
-        if(readyQueue.poll()==null){
-            Config.getCPU().isIdle();
-            return null;
+        ProcessControlBlock nextPCB,currentPCB;
+
+        //Gets the PCB that is going to be replaced.
+        currentPCB = Config.getCPU().getCurrentProcess();
+        if(!readyQueue.isEmpty()){
+            // currently on CPU with one at front of ready queue.
+            nextPCB = readyQueue.poll(); //Retrieves and removes first object from the readyQueue.
+            // Perform context switch, swapping process
+            Config.getCPU().contextSwitch(nextPCB);
+            nextPCB.setState(ProcessControlBlock.State.RUNNING);
+        }else{
+            //Setting cpu to idle.
+            Config.getCPU().contextSwitch(null);
         }
         // Returns process removed from CPU.
-        return prev_process;*/
-        Config.getSimulationClock().logContextSwitch();
-        return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
+        return currentPCB;
 	}
 
     public int syscall(int number, Object... varargs) {
@@ -102,7 +105,7 @@ public class FCFSKernel implements Kernel {
                 result = -1;
         }
         //advance time
-        Config.getSimulationClock().logSystemCall();
+        //Config.getSimulationClock().logSystemCall();
         return result;
     }
 
@@ -111,14 +114,13 @@ public class FCFSKernel implements Kernel {
             case TIME_OUT:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): this kernel does not suppor timeouts.");
             case WAKE_UP:
+                //System.out.println("WAKEN UP");
                 // IODevice has finished an IO request for a process.
                 // Retrieve the PCB of the process (varargs[1]), set its state
-                IODevice temp = Config.getDevice(Integer.parseInt(""+varargs[1]));
-                ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)temp.getProcess();
-                //ProcessControlBlock pcb = Config.getCPU().getCurrentProcess();
+                ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)varargs[1];
                 // to READY, put it on the end of the ready queue.
+                readyQueue.addLast(pcb);
                 pcb.setState(ProcessControlBlock.State.READY);
-                readyQueue.add(pcb);
                 // If CPU is idle then dispatch().
                 if(Config.getCPU().isIdle()){
                     dispatch();
@@ -127,13 +129,12 @@ public class FCFSKernel implements Kernel {
             default:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
         }
-        Config.getSimulationClock().logInterrupt();
+        //Config.getSimulationClock().logInterrupt();
     }
     
     private static ProcessControlBlock loadProgram(String filename) {
         try {
-            ProcessControlBlockImpl temp = new ProcessControlBlockImpl();
-            return temp.loadProgram(filename);
+            return ProcessControlBlockImpl.loadProgram(filename);
         }
         catch (FileNotFoundException fileExp) {
             return null;
