@@ -108,7 +108,7 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
         this.state = state;
     }
 
-    public static ProcessControlBlock loadProgram(String filename) throws Exception{
+    public static ProcessControlBlockImpl loadProgram(String filename) throws Exception{
         try {
             String sCurrentLine;
             BufferedReader br = new BufferedReader(new FileReader(filename));
