@@ -108,7 +108,9 @@ class SimulationClock implements EventHandler<TimeOutEvent>, SystemTimer {
         stringBuilder.append("System time: "+this.getSystemTime()+"\n");
         stringBuilder.append("Kernel time: "+this.getKernelTime()+"\n");
         stringBuilder.append("User time: "+this.getUserTime()+"\n");
-        stringBuilder.append("Idle time: "+(this.getSystemTime()-(this.getKernelTime()+this.getUserTime())));
+        stringBuilder.append("Idle time: "+(this.getSystemTime()-(this.getKernelTime()+this.getUserTime()))+"\n");
+        stringBuilder.append("Context switches: "+Config.getCPU().getContextSwitches()+"\n");
+        stringBuilder.append("CPU utilization: "+(float)this.getUserTime()/getSystemTime()*100 +"\n");
         return stringBuilder.toString();
     }
         
