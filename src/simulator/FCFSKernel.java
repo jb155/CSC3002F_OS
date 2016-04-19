@@ -26,17 +26,19 @@ public class FCFSKernel implements Kernel {
     }
     
     private ProcessControlBlock dispatch() {
-		// Perform context switch, swapping process
-		// currently on CPU with one at front of ready queue.
-		// If ready queue empty then CPU goes idle ( holds a null value).
+        /*// Perform context switch, swapping process
+        ProcessControlBlock prev_process = Config.getCPU().contextSwitch(readyQueue.poll());
+        Config.getCPU().getCurrentProcess().setState(ProcessControlBlock.State.RUNNING);
+        // currently on CPU with one at front of ready queue.
+        // If ready queue empty then CPU goes idle ( holds a null value).
         if(readyQueue.poll()==null){
             Config.getCPU().isIdle();
             return null;
         }
-        //Log content switch
-        //Config.getSimulationClock().logContextSwitch();
         // Returns process removed from CPU.
-        return Config.getCPU().contextSwitch(readyQueue.poll());
+        return prev_process;*/
+
+        return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
 	}
 
     public int syscall(int number, Object... varargs) {
@@ -111,7 +113,9 @@ public class FCFSKernel implements Kernel {
             case WAKE_UP:
                 // IODevice has finished an IO request for a process.
                 // Retrieve the PCB of the process (varargs[1]), set its state
-                ProcessControlBlock pcb = Config.getCPU().getCurrentProcess();
+                IODevice temp = Config.getDevice(Integer.parseInt(""+varargs[1]));
+                ProcessControlBlockImpl pcb = (ProcessControlBlockImpl)temp.getProcess();
+                //ProcessControlBlock pcb = Config.getCPU().getCurrentProcess();
                 // to READY, put it on the end of the ready queue.
                 pcb.setState(ProcessControlBlock.State.READY);
                 readyQueue.add(pcb);

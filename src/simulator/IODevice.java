@@ -16,7 +16,11 @@ public class IODevice {
     private String name;
     private long freeTime;
     private Map<Integer, ProcessControlBlock> queue;    
-    
+
+    public ProcessControlBlock getProcess(){
+        return queue.get(ID);
+    }
+
     /**
      * Create a device with the given id and name (e.g. 'disk').
      */
