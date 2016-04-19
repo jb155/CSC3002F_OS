@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import static simulator.ProcessControlBlock.State.TERMINATED;
+import static simulator.ProcessControlBlock.State.WAITING;
 
 //
 
@@ -29,8 +30,12 @@ public class FCFSKernel implements Kernel {
 		// currently on CPU with one at front of ready queue.
 		// If ready queue empty then CPU goes idle ( holds a null value).
 		// Returns process removed from CPU.
-        ProcessControlBlock returnedFromCPU = (Config.getCPU().contextSwitch(readyQueue.poll())); //Give it next process (pop it off) and retrieve prev process;
-        return returnedFromCPU;
+        if(readyQueue.poll()==null){
+            Config.getCPU().isIdle();
+            return null;
+        }
+        // Returns process removed from CPU.
+        return Config.getCPU().contextSwitch(readyQueue.poll());
 	}
             
     
@@ -69,8 +74,9 @@ public class FCFSKernel implements Kernel {
 					// Find IODevice with given ID: Config.getDevice((Integer)varargs[0]);
 					// Make IO request on device providing burst time (varages[1]),
 					// the PCB of the requesting process, and a reference to this kernel (so // that the IODevice can call interrupt() when the request is completed.
-					// Set the PCB state of the requesting process to WAITING.
                     Config.getDevice((Integer)varargs[0]).requestIO((Integer)varargs[1],tempProcess,this);
+                    // Set the PCB state of the requesting process to WAITING.
+                    tempProcess.setState(WAITING);
                     // Call dispatch().
                     dispatch(); //Need to check here...dispatch returns a pcb
                 }
@@ -97,10 +103,16 @@ public class FCFSKernel implements Kernel {
             case TIME_OUT:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): this kernel does not suppor timeouts.");
             case WAKE_UP:
-				// IODevice has finished an IO request for a process.
-				// Retrieve the PCB of the process (varargs[1]), set its state
-				// to READY, put it on the end of the ready queue.
-				// If CPU is idle then dispatch().
+                // IODevice has finished an IO request for a process.
+                // Retrieve the PCB of the process (varargs[1]), set its state
+                ProcessControlBlock pcb = Config.getCPU().getCurrentProcess();
+                // to READY, put it on the end of the ready queue.
+                pcb.setState(ProcessControlBlock.State.READY);
+                readyQueue.add(pcb);
+                // If CPU is idle then dispatch().
+                if(Config.getCPU().isIdle()){
+                    dispatch();
+                }
                 break;
             default:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
