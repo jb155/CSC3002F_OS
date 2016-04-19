@@ -37,7 +37,7 @@ public class FCFSKernel implements Kernel {
         }
         // Returns process removed from CPU.
         return prev_process;*/
-
+        Config.getSimulationClock().logContextSwitch();
         return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
 	}
 
@@ -102,7 +102,7 @@ public class FCFSKernel implements Kernel {
                 result = -1;
         }
         //advance time
-        //Config.getSimulationClock().logSystemCall();
+        Config.getSimulationClock().logSystemCall();
         return result;
     }
 
@@ -127,7 +127,7 @@ public class FCFSKernel implements Kernel {
             default:
                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
         }
-        //Config.getSimulationClock().logInterrupt();
+        Config.getSimulationClock().logInterrupt();
     }
     
     private static ProcessControlBlock loadProgram(String filename) {
