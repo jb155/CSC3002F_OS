@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  * Created by Jacques on 4/18/2016.
@@ -13,7 +13,7 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
     private int PID = -1;
     private String programName;
     private int priority = -1;
-    private Queue<Instruction> instructionQ;
+    private LinkedList<Instruction> instructionQ = new LinkedList<>();
     private State state;
 
     public void setName (String name){
@@ -115,7 +115,8 @@ public class ProcessControlBlockImpl implements ProcessControlBlock {
                     if(splitString[0].compareToIgnoreCase("CPU")==0){
                         instructionQ.add(new CPUInstruction(Integer.parseInt(splitString[1])));
                     }else if(splitString[0].compareToIgnoreCase("IO")==0){
-                        instructionQ.add(new IOInstruction(Integer.parseInt(splitString[1]),Integer.parseInt(splitString[2])));
+                        IOInstruction tempInstruction = new IOInstruction(Integer.parseInt(splitString[1]),Integer.parseInt(splitString[2]));
+                        instructionQ.add(tempInstruction);
                     }
                 }
                 System.out.println(sCurrentLine);

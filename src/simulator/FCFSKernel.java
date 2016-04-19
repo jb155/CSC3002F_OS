@@ -42,15 +42,17 @@ public class FCFSKernel implements Kernel {
     public int syscall(int number, Object... varargs) {
         int result = 0;
         switch (number) {
-             case MAKE_DEVICE:
+            //case 1:
+            case SystemCall.MAKE_DEVICE:
                 {
                     IODevice device = new IODevice((Integer)varargs[0], (String)varargs[1]);
                     Config.addDevice(device);
                 }
                 break;
-             case EXECVE: 
+            //case 2:
+            case SystemCall.EXECVE:
                 {
-                    ProcessControlBlock pcb = this.loadProgram((String)varargs[0]);
+                    ProcessControlBlock pcb = loadProgram((String)varargs[0]);
                     if (pcb!=null) {
                         // Loaded successfully.
 						// Now add to end of ready queue.
@@ -66,7 +68,8 @@ public class FCFSKernel implements Kernel {
                     }
                 }
                 break;
-             case IO_REQUEST: 
+            //case 3:
+            case SystemCall.IO_REQUEST:
                 {
 					// IO request has come from process currently on the CPU.
 					// Get PCB from CPU.
@@ -82,7 +85,8 @@ public class FCFSKernel implements Kernel {
                     dispatch(); //Need to check here...dispatch returns a pcb
                 }
                 break;
-             case TERMINATE_PROCESS:
+            //case 4:
+            case SystemCall.TERMINATE_PROCESS:
                 {
 					// Process on the CPU has terminated.
 					// Get PCB from CPU.
