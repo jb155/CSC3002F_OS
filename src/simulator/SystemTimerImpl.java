@@ -26,10 +26,6 @@ public class SystemTimerImpl implements SystemTimer {
         Config.getSimulationClock().advanceSystemTime(time);
     }
 
-    private void advanceIdleTime(long time) {
-        Config.getSimulationClock().advanceIdleTime(time);
-    }
-
     private void advanceUserTime(long time) {
         Config.getSimulationClock().advanceUserTime(time);
     }

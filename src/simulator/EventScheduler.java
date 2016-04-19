@@ -30,7 +30,7 @@ class EventScheduler {
         while (!(queue.isEmpty() && Config.getCPU().isIdle())) {
             while (!queue.isEmpty() && queue.peek().getTime()<=Config.getSimulationClock().getSystemTime()) {
                 final Event event = queue.poll();
-                TRACE.PRINTF(32, "Time: %010d Simulator: process %s\n", Config.getSystemTimer().getSystemTime(), event.toString()); 
+                TRACE.PRINTF(32, "Time: %010d Simulator: process %s\n", Config.getSystemTimer().getSystemTime(), event.toString());
                 event.process();
             }
             if (!queue.isEmpty()) {

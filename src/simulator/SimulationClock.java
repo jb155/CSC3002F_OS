@@ -49,7 +49,6 @@ class SimulationClock implements EventHandler<TimeOutEvent>, SystemTimer {
     private long systemTime;
     private long kernelTime;
     private long userTime;
-    private long idleTime;
     
     public SimulationClock(int sysCallCost, int cSwitchCost) {
         this.systemTime = 0;
@@ -90,13 +89,6 @@ class SimulationClock implements EventHandler<TimeOutEvent>, SystemTimer {
         userTime+=time;
     }
 
-    public void advanceIdleTime(long time) {
-        //This method was added to keep track of idle time. Will calculate at end.
-        assert(time>=0);
-        idleTime+=time;
-        advanceSystemTime(time);
-    }
-   
     public void setSystemTime(long time) {
         assert(time>=0);
         systemTime=time;

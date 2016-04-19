@@ -7,18 +7,29 @@ import java.util.Scanner;
  */
 public class SimulateFCFS {
     public static void main(String[] args){
-        print("*** FCFS ***");
-        Scanner s = new Scanner(System.in);
-        print("Enter configuration file name: ");
-        String config_filename = s.nextLine();
-        print("Enter cost of system call: ");
-        int cost_syscall = s.nextInt();
-        print("Enter cost of context switch: ");
-        int cost_context_switch = s.nextInt();
-        print("Enter trace level: ");
-        int trace_level = s.nextInt();
-        s.close();
+        //Read info from screen/user
+        System.out.println("*** FCFS Simulator ***");
+        Scanner scan = new Scanner(System.in);
+        //File name
+        System.out.print("Enter configuration file name: ");
+        String config_filename = scan.nextLine();
+        //System call cost
+        System.out.print("Enter cost of system call: ");
+        int cost_syscall = scan.nextInt();
+        //Content switch cost
+        System.out.print("Enter cost of context switch: ");
+        int cost_context_switch = scan.nextInt();
+        //Trace level
+        System.out.print("Enter trace level: ");
+        int trace_level = scan.nextInt();
+        scan.close();
 
+        //Determine if there is a trace level, if so print trace
+        if (trace_level>0){
+            System.out.println("*** Trace ***");
+        }
+
+        //init eventQ, SystemTimer and kernel
         EventQueue eventQueue = new EventQueue();
         SystemTimerImpl systemTimer = new SystemTimerImpl();
         Kernel kernel = new FCFSKernel();
@@ -32,9 +43,10 @@ public class SimulateFCFS {
 
         CPU cpu = Config.getCPU();
         SimulationClock simulationClock = Config.getSimulationClock();
-    }
 
-    private static void print(String s){
-        System.out.println(s);
+        Config.run();
+
+        System.out.println("*** Results ***");
+        System.out.println(Config.getSimulationClock().toString());
     }
 }

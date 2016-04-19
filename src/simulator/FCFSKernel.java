@@ -29,7 +29,6 @@ public class FCFSKernel implements Kernel {
 		// Perform context switch, swapping process
 		// currently on CPU with one at front of ready queue.
 		// If ready queue empty then CPU goes idle ( holds a null value).
-		// Returns process removed from CPU.
         if(readyQueue.poll()==null){
             Config.getCPU().isIdle();
             return null;
@@ -37,9 +36,7 @@ public class FCFSKernel implements Kernel {
         // Returns process removed from CPU.
         return Config.getCPU().contextSwitch(readyQueue.poll());
 	}
-            
-    
-                
+
     public int syscall(int number, Object... varargs) {
         int result = 0;
         switch (number) {
@@ -73,8 +70,9 @@ public class FCFSKernel implements Kernel {
                     ProcessControlBlock tempProcess = Config.getCPU().getCurrentProcess();
 					// Find IODevice with given ID: Config.getDevice((Integer)varargs[0]);
 					// Make IO request on device providing burst time (varages[1]),
+                    IODevice ioDevice = Config.getDevice((Integer)varargs[0]);
 					// the PCB of the requesting process, and a reference to this kernel (so // that the IODevice can call interrupt() when the request is completed.
-                    Config.getDevice((Integer)varargs[0]).requestIO((Integer)varargs[1],tempProcess,this);
+                    ioDevice.requestIO((Integer)varargs[1], tempProcess, this);
                     // Set the PCB state of the requesting process to WAITING.
                     tempProcess.setState(WAITING);
                     // Call dispatch().
@@ -96,8 +94,7 @@ public class FCFSKernel implements Kernel {
         }
         return result;
     }
-   
-    
+
     public void interrupt(int interruptType, Object... varargs){
         switch (interruptType) {
             case TIME_OUT:
