@@ -1,0 +1,366 @@
+From d4e2309c7c3856ee1f0ea94ab3c95ea89b4499e0 Mon Sep 17 00:00:00 2001
+From: BTHJAC013 <bthjac013@muct.ac.za>
+Date: Tue, 19 Apr 2016 18:16:31 +0200
+Subject: Fixxed Simulate to what Erin suggested
+
+
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+index 6990cf3..0ae265f 100644
+--- a/.idea/workspace.xml
++++ b/.idea/workspace.xml
+@@ -2,11 +2,11 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="ca3ac510-fe9d-4679-ba03-551fe8c9e55b" name="Default" comment="">
+-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/OS/simulator/SimulationClock.class" afterPath="$PROJECT_DIR$/out/production/OS/simulator/SimulationClock.class" />
++      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/OS/simulator/FCFSKernel.class" afterPath="$PROJECT_DIR$/out/production/OS/simulator/FCFSKernel.class" />
++      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/OS/simulator/SimulateFCFS.class" afterPath="$PROJECT_DIR$/out/production/OS/simulator/SimulateFCFS.class" />
+       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/simulator/FCFSKernel.java" afterPath="$PROJECT_DIR$/src/simulator/FCFSKernel.java" />
+-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/simulator/IODevice.java" afterPath="$PROJECT_DIR$/src/simulator/IODevice.java" />
+-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/simulator/SimulationClock.java" afterPath="$PROJECT_DIR$/src/simulator/SimulationClock.java" />
++      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/simulator/SimulateFCFS.java" afterPath="$PROJECT_DIR$/src/simulator/SimulateFCFS.java" />
+     </list>
+     <ignored path="OS.iws" />
+     <ignored path=".idea/workspace.xml" />
+@@ -31,8 +31,8 @@
+       <file leaf-file-name="FCFSKernel.java" pinned="false" current-in-tab="false">
+         <entry file="file://$PROJECT_DIR$/src/simulator/FCFSKernel.java">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="373">
+-              <caret line="40" column="82" selection-start-line="40" selection-start-column="82" selection-end-line="40" selection-end-column="82" />
++            <state relative-caret-position="101">
++              <caret line="39" column="55" selection-start-line="39" selection-start-column="55" selection-end-line="39" selection-end-column="55" />
+               <folding>
+                 <element signature="imports" expanded="true" />
+               </folding>
+@@ -83,11 +83,11 @@
+           </provider>
+         </entry>
+       </file>
+-      <file leaf-file-name="SimulateFCFS.java" pinned="false" current-in-tab="false">
++      <file leaf-file-name="SimulateFCFS.java" pinned="false" current-in-tab="true">
+         <entry file="file://$PROJECT_DIR$/src/simulator/SimulateFCFS.java">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="237">
+-              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
++            <state relative-caret-position="263">
++              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+               <folding />
+             </state>
+           </provider>
+@@ -126,11 +126,17 @@
+           </provider>
+         </entry>
+       </file>
+-      <file leaf-file-name="ProcessControlBlockImpl.java" pinned="false" current-in-tab="true">
++      <file leaf-file-name="ProcessControlBlockImpl.java" pinned="false" current-in-tab="false">
+         <entry file="file://$PROJECT_DIR$/src/simulator/ProcessControlBlockImpl.java">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="594">
+-              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
++            <state relative-caret-position="645">
++              <caret line="129" column="20" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
++              <caret line="128" column="9" selection-start-line="128" selection-start-column="9" selection-end-line="128" selection-end-column="9" />
++              <caret line="127" column="24" selection-start-line="127" selection-start-column="24" selection-end-line="127" selection-end-column="24" />
++              <caret line="126" column="37" selection-start-line="126" selection-start-column="37" selection-end-line="126" selection-end-column="37" />
++              <caret line="125" column="26" selection-start-line="125" selection-start-column="26" selection-end-line="125" selection-end-column="26" />
++              <caret line="124" column="37" selection-start-line="124" selection-start-column="37" selection-end-line="124" selection-end-column="37" />
++              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+               <folding>
+                 <element signature="imports" expanded="true" />
+                 <element signature="e#1245#1246#0" expanded="true" />
+@@ -171,13 +177,13 @@
+         <option value="$PROJECT_DIR$/src/simulator/Kernel.java" />
+         <option value="$PROJECT_DIR$/src/simulator/CPU.java" />
+         <option value="$PROJECT_DIR$/src/simulator/EventScheduler.java" />
+-        <option value="$PROJECT_DIR$/src/simulator/SimulateFCFS.java" />
+         <option value="$PROJECT_DIR$/src/simulator/SystemTimerImpl.java" />
+         <option value="$PROJECT_DIR$/src/simulator/Config.java" />
+         <option value="$PROJECT_DIR$/src/simulator/ProcessControlBlockImpl.java" />
+         <option value="$PROJECT_DIR$/src/simulator/SimulationClock.java" />
+         <option value="$PROJECT_DIR$/src/simulator/IODevice.java" />
+         <option value="$PROJECT_DIR$/src/simulator/FCFSKernel.java" />
++        <option value="$PROJECT_DIR$/src/simulator/SimulateFCFS.java" />
+       </list>
+     </option>
+   </component>
+@@ -245,20 +251,6 @@
+               <option name="myItemId" value="src" />
+               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+             </PATH_ELEMENT>
+-          </PATH>
+-          <PATH>
+-            <PATH_ELEMENT>
+-              <option name="myItemId" value="OS" />
+-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+-            </PATH_ELEMENT>
+-            <PATH_ELEMENT>
+-              <option name="myItemId" value="OS" />
+-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+-            </PATH_ELEMENT>
+-            <PATH_ELEMENT>
+-              <option name="myItemId" value="src" />
+-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+-            </PATH_ELEMENT>
+             <PATH_ELEMENT>
+               <option name="myItemId" value="simulator" />
+               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+@@ -599,7 +591,7 @@
+   </component>
+   <component name="ToolWindowManager">
+     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+-    <editor active="true" />
++    <editor active="false" />
+     <layout>
+       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+@@ -608,7 +600,7 @@
+       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26025236" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
++      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24605678" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+@@ -1070,14 +1062,6 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/simulator/Config.java">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="234">
+-          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+-          <folding />
+-        </state>
+-      </provider>
+-    </entry>
+     <entry file="file://$PROJECT_DIR$/src/simulator/SimulationClock.java">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="226">
+@@ -1108,33 +1092,47 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/simulator/SimulateFCFS.java">
++    <entry file="file://$PROJECT_DIR$/src/simulator/ProcessControlBlockImpl.java">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="645">
++          <caret line="129" column="20" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
++          <caret line="128" column="9" selection-start-line="128" selection-start-column="9" selection-end-line="128" selection-end-column="9" />
++          <caret line="127" column="24" selection-start-line="127" selection-start-column="24" selection-end-line="127" selection-end-column="24" />
++          <caret line="126" column="37" selection-start-line="126" selection-start-column="37" selection-end-line="126" selection-end-column="37" />
++          <caret line="125" column="26" selection-start-line="125" selection-start-column="26" selection-end-line="125" selection-end-column="26" />
++          <caret line="124" column="37" selection-start-line="124" selection-start-column="37" selection-end-line="124" selection-end-column="37" />
++          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
++          <folding>
++            <element signature="imports" expanded="true" />
++            <element signature="e#1245#1246#0" expanded="true" />
++            <element signature="e#1287#1288#0" expanded="true" />
++          </folding>
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/src/simulator/Config.java">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="237">
+-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
++        <state relative-caret-position="234">
++          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/src/simulator/FCFSKernel.java">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="373">
+-          <caret line="40" column="82" selection-start-line="40" selection-start-column="82" selection-end-line="40" selection-end-column="82" />
++        <state relative-caret-position="101">
++          <caret line="39" column="55" selection-start-line="39" selection-start-column="55" selection-end-line="39" selection-end-column="55" />
+           <folding>
+             <element signature="imports" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/simulator/ProcessControlBlockImpl.java">
++    <entry file="file://$PROJECT_DIR$/src/simulator/SimulateFCFS.java">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="594">
+-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+-          <folding>
+-            <element signature="imports" expanded="true" />
+-            <element signature="e#1245#1246#0" expanded="true" />
+-            <element signature="e#1287#1288#0" expanded="true" />
+-          </folding>
++        <state relative-caret-position="263">
++          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
++          <folding />
+         </state>
+       </provider>
+     </entry>
+diff --git a/out/production/OS/simulator/FCFSKernel.class b/out/production/OS/simulator/FCFSKernel.class
+index 777fbb7..f35b5aa 100644
+Binary files a/out/production/OS/simulator/FCFSKernel.class and b/out/production/OS/simulator/FCFSKernel.class differ
+diff --git a/out/production/OS/simulator/SimulateFCFS.class b/out/production/OS/simulator/SimulateFCFS.class
+index 4f1a180..f94387f 100644
+Binary files a/out/production/OS/simulator/SimulateFCFS.class and b/out/production/OS/simulator/SimulateFCFS.class differ
+diff --git a/out/production/OS/simulator/Test2C/._config.cfg b/out/production/OS/simulator/Test2C/._config.cfg
+new file mode 100644
+index 0000000..cd621b2
+Binary files /dev/null and b/out/production/OS/simulator/Test2C/._config.cfg differ
+diff --git a/out/production/OS/simulator/Test2C/FCFS.log b/out/production/OS/simulator/Test2C/FCFS.log
+new file mode 100644
+index 0000000..093e380
+--- /dev/null
++++ b/out/production/OS/simulator/Test2C/FCFS.log
+@@ -0,0 +1,30 @@
++Time: 0000000000 Kernel: SysCall(MAKE_DEVICE, id=1,name="disk")
++Time: 0000000001 Kernel: SysCall complete
++Time: 0000000000 Kernel: SysCall(EXECVE, name="Test2C/programA.prg")
++Time: 0000000001 Kernel: Context Switch {Idle}, process(pid=1, state=READY, name="Test2C/programA.prg")).
++Time: 0000000004 Kernel: SysCall complete
++Time: 0000000004 Kernel: SysCall(EXECVE, name="Test2C/programB.prg")
++Time: 0000000005 Kernel: SysCall complete
++Time: 0000001005 Kernel: SysCall(IO_REQUEST, device(id=1), duration=2000, process(pid=1, state=RUNNING, name="Test2C/programA.prg"))
++Time: 0000001006 Kernel: Context Switch process(pid=1, state=WAITING, name="Test2C/programA.prg"), process(pid=2, state=READY, name="Test2C/programB.prg")).
++Time: 0000001009 Kernel: SysCall complete
++Time: 0000001509 Kernel: SysCall(IO_REQUEST, device(id=1), duration=1000, process(pid=2, state=RUNNING, name="Test2C/programB.prg"))
++Time: 0000001510 Kernel: Context Switch process(pid=2, state=WAITING, name="Test2C/programB.prg"), {Idle}).
++Time: 0000001513 Kernel: SysCall complete
++Time: 0000003006 Kernel: Interrupt(WAKE_UP, device(id=1), process(pid=1, state=WAITING, name="Test2C/programA.prg"))
++Time: 0000003007 Kernel: Context Switch {Idle}, process(pid=1, state=READY, name="Test2C/programA.prg")).
++Time: 0000003010 Kernel: Interrupt exit
++Time: 0000004006 Kernel: Interrupt(WAKE_UP, device(id=1), process(pid=2, state=WAITING, name="Test2C/programB.prg"))
++Time: 0000004007 Kernel: Interrupt exit
++Time: 0000004011 Kernel: SysCall(TERMINATE_PROCESS, process(pid=1, state=RUNNING, name="Test2C/programA.prg"))
++Time: 0000004012 Kernel: Context Switch process(pid=1, state=TERMINATED, name="Test2C/programA.prg"), process(pid=2, state=READY, name="Test2C/programB.prg")).
++Time: 0000004015 Kernel: SysCall complete
++Time: 0000005015 Kernel: SysCall(TERMINATE_PROCESS, process(pid=2, state=RUNNING, name="Test2C/programB.prg"))
++Time: 0000005016 Kernel: Context Switch process(pid=2, state=TERMINATED, name="Test2C/programB.prg"), {Idle}).
++Time: 0000005019 Kernel: SysCall complete
++System time: 5019
++Kernel time: 26
++User time: 3500
++Idle time: 1493
++Context switches: 6
++CPU utilization: 69.74
+diff --git a/out/production/OS/simulator/Test2C/RR.log b/out/production/OS/simulator/Test2C/RR.log
+new file mode 100644
+index 0000000..d6250c0
+--- /dev/null
++++ b/out/production/OS/simulator/Test2C/RR.log
+@@ -0,0 +1,34 @@
++Time: 0000000000 Kernel: SysCall(MAKE_DEVICE, id=1,name="disk")
++Time: 0000000001 Kernel: SysCall complete
++Time: 0000000000 Kernel: SysCall(EXECVE, name="Test2C/programA.prg")
++Time: 0000000001 Kernel: Context Switch {Idle}, process(pid=1, state=READY, name="Test2C/programA.prg")).
++Time: 0000000004 Kernel: SysCall complete
++Time: 0000000004 Kernel: SysCall(EXECVE, name="Test2C/programB.prg")
++Time: 0000000005 Kernel: SysCall complete
++Time: 0000001004 Kernel: Interrupt(TIME_OUT, process(pid=1, state=RUNNING, name="Test2C/programA.prg"))
++Time: 0000001005 Kernel: Context Switch process(pid=1, state=READY, name="Test2C/programA.prg"), process(pid=2, state=READY, name="Test2C/programB.prg")).
++Time: 0000001008 Kernel: Interrupt exit
++Time: 0000001508 Kernel: SysCall(IO_REQUEST, device(id=1), duration=1000, process(pid=2, state=RUNNING, name="Test2C/programB.prg"))
++Time: 0000001509 Kernel: Context Switch process(pid=2, state=WAITING, name="Test2C/programB.prg"), process(pid=1, state=READY, name="Test2C/programA.prg")).
++Time: 0000001512 Kernel: SysCall complete
++Time: 0000001513 Kernel: SysCall(IO_REQUEST, device(id=1), duration=2000, process(pid=1, state=RUNNING, name="Test2C/programA.prg"))
++Time: 0000001514 Kernel: Context Switch process(pid=1, state=WAITING, name="Test2C/programA.prg"), {Idle}).
++Time: 0000001517 Kernel: SysCall complete
++Time: 0000002509 Kernel: Interrupt(WAKE_UP, device(id=1), process(pid=2, state=WAITING, name="Test2C/programB.prg"))
++Time: 0000002510 Kernel: Context Switch {Idle}, process(pid=2, state=READY, name="Test2C/programB.prg")).
++Time: 0000002513 Kernel: Interrupt exit
++Time: 0000003513 Kernel: SysCall(TERMINATE_PROCESS, process(pid=2, state=RUNNING, name="Test2C/programB.prg"))
++Time: 0000003514 Kernel: Context Switch process(pid=2, state=TERMINATED, name="Test2C/programB.prg"), {Idle}).
++Time: 0000003517 Kernel: SysCall complete
++Time: 0000004509 Kernel: Interrupt(WAKE_UP, device(id=1), process(pid=1, state=WAITING, name="Test2C/programA.prg"))
++Time: 0000004510 Kernel: Context Switch {Idle}, process(pid=1, state=READY, name="Test2C/programA.prg")).
++Time: 0000004513 Kernel: Interrupt exit
++Time: 0000005513 Kernel: SysCall(TERMINATE_PROCESS, process(pid=1, state=RUNNING, name="Test2C/programA.prg"))
++Time: 0000005514 Kernel: Context Switch process(pid=1, state=TERMINATED, name="Test2C/programA.prg"), {Idle}).
++Time: 0000005517 Kernel: SysCall complete
++System time: 5517
++Kernel time: 33
++User time: 3500
++Idle time: 1984
++Context switches: 8
++CPU utilization: 63.44
+diff --git a/out/production/OS/simulator/Test2C/config.cfg b/out/production/OS/simulator/Test2C/config.cfg
+new file mode 100644
+index 0000000..2cee717
+--- /dev/null
++++ b/out/production/OS/simulator/Test2C/config.cfg
+@@ -0,0 +1,5 @@
++# CPU only, no devices, burst > slice, start time 0.
++# Use slice time 1000
++DEVICE 1 disk
++PROGRAM 0 0 C:\Users\Jacques\Documents\UCT\CSC3002F\Coding\OS\tests\Test2C\programA.prg 
++PROGRAM 0 0 C:\Users\Jacques\Documents\UCT\CSC3002F\Coding\OS\tests\Test2C\programB.prg
+\ No newline at end of file
+diff --git a/out/production/OS/simulator/Test2C/programA.prg b/out/production/OS/simulator/Test2C/programA.prg
+new file mode 100644
+index 0000000..293fce4
+--- /dev/null
++++ b/out/production/OS/simulator/Test2C/programA.prg
+@@ -0,0 +1,3 @@
++CPU 1000
++IO 2000 1
++CPU 1000
+\ No newline at end of file
+diff --git a/out/production/OS/simulator/Test2C/programB.prg b/out/production/OS/simulator/Test2C/programB.prg
+new file mode 100644
+index 0000000..d79c104
+--- /dev/null
++++ b/out/production/OS/simulator/Test2C/programB.prg
+@@ -0,0 +1,3 @@
++CPU 500
++IO 1000 1
++CPU 1000
+\ No newline at end of file
+diff --git a/src/simulator/FCFSKernel.java b/src/simulator/FCFSKernel.java
+index b548598..8d1a87d 100644
+--- a/src/simulator/FCFSKernel.java
++++ b/src/simulator/FCFSKernel.java
+@@ -37,7 +37,7 @@ public class FCFSKernel implements Kernel {
+         }
+         // Returns process removed from CPU.
+         return prev_process;*/
+-
++        Config.getSimulationClock().logContextSwitch();
+         return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
+ 	}
+ 
+@@ -102,7 +102,7 @@ public class FCFSKernel implements Kernel {
+                 result = -1;
+         }
+         //advance time
+-        //Config.getSimulationClock().logSystemCall();
++        Config.getSimulationClock().logSystemCall();
+         return result;
+     }
+ 
+@@ -127,7 +127,7 @@ public class FCFSKernel implements Kernel {
+             default:
+                 throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
+         }
+-        //Config.getSimulationClock().logInterrupt();
++        Config.getSimulationClock().logInterrupt();
+     }
+     
+     private static ProcessControlBlock loadProgram(String filename) {
+diff --git a/src/simulator/SimulateFCFS.java b/src/simulator/SimulateFCFS.java
+index 08930e5..963ceb8 100644
+--- a/src/simulator/SimulateFCFS.java
++++ b/src/simulator/SimulateFCFS.java
+@@ -40,10 +40,6 @@ public class SimulateFCFS {
+         //init config
+         Config.init(kernel, cost_context_switch, cost_syscall);
+         Config.buildConfiguration(config_filename);
+-
+-        CPU cpu = Config.getCPU();
+-        SimulationClock simulationClock = Config.getSimulationClock();
+-
+         Config.run();
+ 
+         System.out.println("*** Results ***");
