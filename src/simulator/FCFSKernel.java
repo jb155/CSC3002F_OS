@@ -27,19 +27,6 @@ public class FCFSKernel implements Kernel {
     }
     
     private ProcessControlBlock dispatch() {
-        /*// Perform context switch, swapping process
-        ProcessControlBlock prev_process = Config.getCPU().contextSwitch(readyQueue.poll());
-        Config.getCPU().getCurrentProcess().setState(ProcessControlBlock.State.RUNNING);
-        // currently on CPU with one at front of ready queue.
-        // If ready queue empty then CPU goes idle ( holds a null value).
-        if(readyQueue.poll()==null){
-            Config.getCPU().isIdle();
-            return null;
-        }
-        // Returns process removed from CPU.
-        return prev_process;*/
-       // Config.getSimulationClock().logContextSwitch();
-       // return Config.getCPU().contextSwitch(Config.getCPU().getCurrentProcess());
         ProcessControlBlockImpl curr = (ProcessControlBlockImpl) Config.getCPU().getCurrentProcess();
 
         if(!readyQueue.isEmpty()) {
