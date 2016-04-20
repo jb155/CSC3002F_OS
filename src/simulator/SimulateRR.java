@@ -8,11 +8,14 @@ import java.util.Scanner;
 public class SimulateRR {
     public static void main(String[] args){
         //Read info from screen/user
-        System.out.println("*** FCFS Simulator ***");
+        System.out.println("*** RR Simulator ***");
         Scanner scan = new Scanner(System.in);
         //File name
         System.out.print("Enter configuration file name: ");
         String config_filename = scan.nextLine();
+        //Slice time
+        System.out.print ("Enter slice time: ");
+        int sliceTime = scan.nextInt();
         //System call cost
         System.out.print("Enter cost of system call: ");
         int cost_syscall = scan.nextInt();
@@ -32,7 +35,7 @@ public class SimulateRR {
         //init eventQ, SystemTimer and kernel
         EventQueue eventQueue = new EventQueue();
         SystemTimerImpl systemTimer = new SystemTimerImpl();
-        Kernel kernel = new FCFSKernel();
+        Kernel kernel = new RRKernel(sliceTime);
 
         //init trace
         TRACE.SET_TRACE_LEVEL(trace_level);

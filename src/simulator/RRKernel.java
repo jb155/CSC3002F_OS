@@ -4,9 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static simulator.ProcessControlBlock.State.RUNNING;
-import static simulator.ProcessControlBlock.State.TERMINATED;
-import static simulator.ProcessControlBlock.State.WAITING;
+import static simulator.ProcessControlBlock.State.*;
 
 //
 
@@ -17,13 +15,13 @@ import static simulator.ProcessControlBlock.State.WAITING;
  * @version 8/3/15
  */
 public class RRKernel implements Kernel {
-
-    //private Deque<ProcessControlBlock> readyQueue;    --- overly complicated. Decided to take the easier route.
     private LinkedList<ProcessControlBlock> readyQueue;
+    private int timeSlice;
 
-    public RRKernel() {
+    public RRKernel(int time) {
 		// Set up the ready queue.
         readyQueue = new LinkedList<ProcessControlBlock>();
+        timeSlice = time;
     }
     
     private ProcessControlBlock dispatch() {
@@ -33,16 +31,14 @@ public class RRKernel implements Kernel {
             ProcessControlBlockImpl next = (ProcessControlBlockImpl) readyQueue.poll();
             next.setState(RUNNING);
             Config.getCPU().contextSwitch(next);
-
+            //Call scheduler
+            Config.getSimulationClock().scheduleInterrupt(timeSlice,this,next.getPID());
+        } else{
+              Config.getCPU().contextSwitch(null);
         }
 
-        else{
 
-            Config.getCPU().contextSwitch(null);
-
-        }
         return curr;
-
 	}
 
     public int syscall(int number, Object... varargs) {
@@ -87,8 +83,10 @@ public class RRKernel implements Kernel {
                     ioDevice.requestIO((Integer)varargs[1], tempProcess, this);
                     // Set the PCB state of the requesting process to WAITING.
                     tempProcess.setState(WAITING);
+                    //IO request it needs to cancel the current one and create a new one
+                    Config.getSimulationClock().cancelInterrupt(Config.getCPU().getCurrentProcess().getPID());
                     // Call dispatch().
-                    dispatch(); //Need to check here...dispatch returns a pcb
+                    dispatch();
                 }
                 break;
             //case 4:
@@ -98,6 +96,7 @@ public class RRKernel implements Kernel {
 					// Get PCB from CPU.
 					// Set status to TERMINATED.
                     Config.getCPU().getCurrentProcess().setState(TERMINATED);
+                    Config.getSimulationClock().cancelInterrupt(Config.getCPU().getCurrentProcess().getPID());
                     // Call dispatch().
                     dispatch(); //Need to check here...dispatch returns a pcb
                 }
@@ -113,7 +112,8 @@ public class RRKernel implements Kernel {
     public void interrupt(int interruptType, Object... varargs){
         switch (interruptType) {
             case TIME_OUT:
-                throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): this kernel does not suppor timeouts.");
+                //Times out, start next process
+                Config.getSimulationClock().scheduleInterrupt(timeSlice,this,varargs[0]);
             case WAKE_UP:
                 // IODevice has finished an IO request for a process.
                 // Retrieve the PCB of the process (varargs[1]), set its state
@@ -124,10 +124,11 @@ public class RRKernel implements Kernel {
                 // If CPU is idle then dispatch().
                 if(Config.getCPU().isIdle()){
                     dispatch();
+                    Config.getSimulationClock().cancelInterrupt(Config.getCPU().getCurrentProcess().getPID());
                 }
                 break;
             default:
-                throw new IllegalArgumentException("FCFSKernel:interrupt("+interruptType+"...): unknown type.");
+                throw new IllegalArgumentException("RRKernel:interrupt("+interruptType+"...): unknown type.");
         }
         //Config.getSimulationClock().logInterrupt();
     }
